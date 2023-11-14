@@ -10,4 +10,6 @@ add_executable(HotelProject2 main.cpp
         includes/room.h
         includes/hotel.cpp
         includes/hotel.h
-        includes/includes.h)
+        includes/includes.h
+        main.cpp
+        main.cpp)

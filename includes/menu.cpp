@@ -1,9 +1,12 @@
-#include "Menu.h"
+#include "menu.h"
+#include "hotel.h"
 #include <iostream>
 #include <limits>
 #include <fstream>
 using namespace std;
 
+string inputDate;
+Hotel hotel;
 bool isValidDate(const string& date) {
     if (date.length() != 8) { return false; }
     if (!isdigit(date[0]) || !isdigit(date[1]) || date[2] != '-' ||
@@ -14,7 +17,7 @@ bool isValidDate(const string& date) {
     return true;
 }
 void processDate(const string& date) {
-    string filename = date;
+    const string& filename = date;
     ifstream existingFile(filename);
     if (existingFile) {
         cout << "Data for " << date << ":" << endl;
@@ -28,26 +31,37 @@ void processDate(const string& date) {
         newFile.close();
     }
 }
+void generate() {
+    for (int i=100; i<= 302; i++) {
+        hotel.append(i);
+        if (i == 170) {
+            i = 200;
+        } else if (i == 250) {
+            i = 300;
+        }
+    }
+}
 void Menu::beginDay() {
-    string inputDate;
+    cout << "Welcome to the Hotel administrator platform!" << endl;
     while(true) {
-        cout << "Welcome to the Hotel administrator platform!" << endl;
+
         cout << "Please enter the desired date! (mm-dd-yy): ";
         cin >> inputDate;
         if (isValidDate(inputDate)) {
+            processDate(inputDate);
+            generate();
+            displayMenu();
             break;
         } else {
             cout << "Invalid date format. Please try again." << endl;
         }
     }
-
 }
 void Menu::displayMenu() {
     bool cont = true;
-
     do {
         cout << "=============================" << endl;
-        cout << "        " << date << " " << endl;
+        cout << "        " << inputDate << " " << endl;
         cout << "=============================" << endl;
         cout << "1. Reserve a room" << endl;
         cout << "2. Display Rooms Available" << endl;
@@ -72,7 +86,7 @@ void Menu::displayMenu() {
                 bookRoom();
                 break;
             case 2:
-                //displayRooms();
+                hotel.fullDisplay();
                 break;
             case 3:
                 //displayRev();

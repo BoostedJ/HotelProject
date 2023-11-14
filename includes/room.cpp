@@ -14,8 +14,6 @@ Room::Room(const int num) : roomNumber(num), next(nullptr) {
     } else if (roomNumber == 301 || roomNumber == 302) {
         roomType = "Penthouse";
         price = 1135;
-    } else {
-        return;
     }
     occupant = "N/A";
     occupied = false;
@@ -38,4 +36,9 @@ int Room::getPrice() const {
 bool Room::isOccupied() const {
     return occupied;
 }
-
+void Room::book(std::string name) {
+    std::cout << "Successfully booked " << name << "into" << roomType <<
+        " room " << roomNumber << std::endl;
+    occupant = std::move(name);
+    occupied = true;
+}

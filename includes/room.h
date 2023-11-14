@@ -1,5 +1,5 @@
 #pragma once
-#include <string>
+#include <iostream>
 
 struct Room {
 private:
@@ -15,6 +15,7 @@ public:
     std::string getType();
     std::string getOccupant();
     void setOccupant(std::string);
+    void book(std::string);
     [[nodiscard]] int getRoomNum() const;
     [[nodiscard]] int getPrice() const;
     [[nodiscard]] bool isOccupied() const;

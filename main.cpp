@@ -1,4 +1,4 @@
-#include "includes/Menu.h"
+#include "includes/menu.h"
 /* TODO: finish creating file system, finish hotel, test to make sure rooms
  * TODO: are being created correctly, create booking system
  */

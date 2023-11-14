@@ -67,8 +67,8 @@ build CMakeFiles/HotelProject2.dir/includes/room.cpp.obj: CXX_COMPILER__HotelPro
   OBJECT_DIR = CMakeFiles\HotelProject2.dir
   OBJECT_FILE_DIR = CMakeFiles\HotelProject2.dir\includes
 
-build CMakeFiles/HotelProject2.dir/includes/Hotel.cpp.obj: CXX_COMPILER__HotelProject2_unscanned_Debug C$:/Users/djdou/CLionProjects/HotelProject2/includes/Hotel.cpp || cmake_object_order_depends_target_HotelProject2
-  DEP_FILE = CMakeFiles\HotelProject2.dir\includes\Hotel.cpp.obj.d
+build CMakeFiles/HotelProject2.dir/includes/hotel.cpp.obj: CXX_COMPILER__HotelProject2_unscanned_Debug C$:/Users/djdou/CLionProjects/HotelProject2/includes/hotel.cpp || cmake_object_order_depends_target_HotelProject2
+  DEP_FILE = CMakeFiles\HotelProject2.dir\includes\hotel.cpp.obj.d
   FLAGS = -g -fdiagnostics-color=always
   OBJECT_DIR = CMakeFiles\HotelProject2.dir
   OBJECT_FILE_DIR = CMakeFiles\HotelProject2.dir\includes
@@ -81,7 +81,7 @@ build CMakeFiles/HotelProject2.dir/includes/Hotel.cpp.obj: CXX_COMPILER__HotelPr
 #############################################
 # Link the executable HotelProject2.exe
 
-build HotelProject2.exe: CXX_EXECUTABLE_LINKER__HotelProject2_Debug CMakeFiles/HotelProject2.dir/main.cpp.obj CMakeFiles/HotelProject2.dir/includes/menu.cpp.obj CMakeFiles/HotelProject2.dir/includes/room.cpp.obj CMakeFiles/HotelProject2.dir/includes/Hotel.cpp.obj
+build HotelProject2.exe: CXX_EXECUTABLE_LINKER__HotelProject2_Debug CMakeFiles/HotelProject2.dir/main.cpp.obj CMakeFiles/HotelProject2.dir/includes/menu.cpp.obj CMakeFiles/HotelProject2.dir/includes/room.cpp.obj CMakeFiles/HotelProject2.dir/includes/hotel.cpp.obj
   FLAGS = -g
   LINK_LIBRARIES = -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
   OBJECT_DIR = CMakeFiles\HotelProject2.dir
