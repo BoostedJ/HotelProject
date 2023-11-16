@@ -7,6 +7,7 @@ using namespace std;
 
 string inputDate;
 Hotel hotel;
+int revenue;
 bool isValidDate(const string& date) {
     if (date.length() != 8) { return false; }
     if (!isdigit(date[0]) || !isdigit(date[1]) || date[2] != '-' ||
@@ -16,6 +17,7 @@ bool isValidDate(const string& date) {
         }
     return true;
 }
+
 void processDate(const string& date) {
     const string& filename = date;
     ifstream existingFile(filename);
@@ -31,8 +33,9 @@ void processDate(const string& date) {
         newFile.close();
     }
 }
+
 void generate() {
-    for (int i=100; i<= 302; i++) {
+    for (int i=101; i<= 302; i++) {
         hotel.append(i);
         if (i == 170) {
             i = 200;
@@ -41,6 +44,7 @@ void generate() {
         }
     }
 }
+
 void Menu::beginDay() {
     cout << "Welcome to the Hotel administrator platform!" << endl;
     while(true) {
@@ -57,6 +61,7 @@ void Menu::beginDay() {
         }
     }
 }
+
 void Menu::displayMenu() {
     bool cont = true;
     do {
@@ -100,7 +105,7 @@ void Menu::displayMenu() {
                 cont = false;
                 break;
             default:
-                cout << "Please enter a number between 1-4.\n";
+                cout << "Please enter a number between 1-5.\n";
                 choice = -1;
                 break;
         }
@@ -115,6 +120,46 @@ void Menu::bookRoom() {
     cout << "4. Penthouse" << endl;
     cout << "5. Custom Number" << endl;
     cout << "6. Exit" << endl;
+    int choice;
+    cin >> choice;
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    if (cin.fail()) {
+        cin.clear();
+        cout << "Please enter a number between 1-6. \n";
+    }
+
+    switch (choice) {
+        case 1:
+            revenue += hotel.bookCourt();
+            break;
+        case 2:
+            revenue += hotel.bookScenic();
+            break;
+        case 3:
+            revenue += hotel.bookDeluxe();
+            break;
+        case 4:
+            revenue += hotel.bookPent();
+            break;
+        case 5:
+
+            break;
+        case 6:
+            cout << endl << endl;
+            break;
+        default:
+            cout << "Please enter a number between 1-4.\n";
+            choice = -1;
+            break;
+    }
+}
+
+void Menu::roomsMenu() {
+    cout << "Please enter a which option to display: " << endl;
+    cout << "1. Available rooms" << endl;
+    cout << "2. Occupied rooms" << endl;
+    cout << "3. All rooms" << endl;
+    cout << "4. Exit" << endl;
     int choice;
     cin >> choice;
     cin.ignore(numeric_limits<streamsize>::max(), '\n');
@@ -149,25 +194,6 @@ void Menu::bookRoom() {
     }
 }
 /*
-void Menu::displayRooms() {
-    cout << "\n=============================" << endl;
-    cout << " Rooms currently available: \n";
-
-    int available = 0;
-    for (int i=0; i < sizeof(rooms)/sizeof(rooms[0]); i++) {
-        available += rooms[i].getAvailableRooms();
-        cout << "   " << rooms[i].getAvailableRooms() << " " << rooms[i].name;
-        if (rooms[i].getAvailableRooms() != 1) {
-            cout << "s";
-        }
-        cout << "." << endl;
-    }
-    cout << " In total, there are " << available << " rooms left\n";
-    cout << "=============================" << endl;
-    cout << "Please press Enter or any key to continue..." << endl;
-    string io;
-    getline(cin, io);
-}
 void Menu::displayRev() const {
     cout << "\n=============================" << endl;
     cout << " Currently, we have made: " << endl;

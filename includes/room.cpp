@@ -18,26 +18,33 @@ Room::Room(const int num) : roomNumber(num), next(nullptr) {
     occupant = "N/A";
     occupied = false;
 }
+
 std::string Room::getType() {
     return std::move(roomType);
 }
+
 std::string Room::getOccupant() {
     return std::move(occupant);
 }
+
 void Room::setOccupant(std::string occName) {
     occupant = std::move(occName);
 }
+
 int Room::getRoomNum() const {
     return roomNumber;
 }
+
 int Room::getPrice() const {
     return price;
 }
+
 bool Room::isOccupied() const {
     return occupied;
 }
+
 void Room::book(std::string name) {
-    std::cout << "Successfully booked " << name << "into" << roomType <<
+    std::cout << "Successfully booked " << name << " into " << roomType <<
         " room " << roomNumber << std::endl;
     occupant = std::move(name);
     occupied = true;

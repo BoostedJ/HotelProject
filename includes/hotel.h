@@ -10,9 +10,20 @@ private:
     Room* pentHead;
 public:
     Hotel();
+
     ~Hotel();
+
     void append(int);
+
     void fullDisplay() const;
-    void occupiedDisplay();
-    void bookCourt();
+
+    void occupiedDisplay() const;
+
+    int bookCourt() const;
+
+    int bookScenic() const;
+
+    int bookDeluxe() const;
+
+    int bookPent() const;
 };
