@@ -1,5 +1,6 @@
 #pragma once
 #include "room.h"
+#include <map>
 
 class Hotel {
 private:
@@ -15,9 +16,13 @@ public:
 
     void append(int);
 
-    void fullDisplay() const;
+    int availableDisplay() const;
 
-    void occupiedDisplay() const;
+    int occupiedDisplay() const;
+
+    int countOccupiedRooms() const;
+
+    int fullDisplay() const;
 
     int bookCourt() const;
 
@@ -26,4 +31,6 @@ public:
     int bookDeluxe() const;
 
     int bookPent() const;
+
+    std::map<std::string, int> countBookedByType() const;
 };

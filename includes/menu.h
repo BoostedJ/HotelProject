@@ -15,7 +15,7 @@ private:
 
     void displayRev() const;
 
-    void getTotal() const;
+    void endDay() const;
 
     int revenue = 0;
 };

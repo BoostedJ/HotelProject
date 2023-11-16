@@ -36,35 +36,36 @@ void roomMessage(Room* room) {
     }
 }
 
-void Hotel::fullDisplay() const {
+int Hotel::availableDisplay() const {
     Room* curr = head;
     int counter = 0;
-    if (!head) {
-        std::cout << std::endl;
-        return;
-    }
-    while (curr->next) {
-        roomMessage(curr);
-        curr = curr->next;
-        counter++;
-        if (counter == 3) {
-            counter = 0;
-            std::cout << std::endl;
-        } else {
-            std::cout << " | ";
+    int occupied = 0;
+    do {
+        if (!curr->isOccupied()) {
+            roomMessage(curr);
+            counter++;
+            occupied++;
+            if (counter == 2) {
+                counter = 0;
+                std::cout << std::endl;
+            } else {
+                std::cout << " | ";
+            }
         }
-    }
-    roomMessage(curr);
-    std::cout << std::endl;
+        curr = curr->next;
+    } while(curr);
+    return occupied;
 }
 
-void Hotel::occupiedDisplay() const {
+int Hotel::occupiedDisplay() const {
     Room* curr = head;
     int counter = 0;
+    int occupied = 0;
     do {
         if (curr->isOccupied()) {
             roomMessage(curr);
             counter++;
+            occupied++;
             if (counter == 2) {
                 counter = 0;
                 std::cout << std::endl;
@@ -74,6 +75,44 @@ void Hotel::occupiedDisplay() const {
         }
         curr = curr->next;
     } while(curr->next);
+    return occupied;
+}
+int Hotel::countOccupiedRooms() const {
+    Room* curr = head;
+    int occupied = 0;
+    while (curr) {
+        if (curr->isOccupied()) {
+            occupied++;
+        }
+        curr = curr->next;
+    }
+    return occupied;
+}
+
+
+int Hotel::fullDisplay() const {
+    Room* curr = head;
+    int counter = 0;
+    int total = 0;
+    if (!head) {
+        std::cout << std::endl;
+        return 0;
+    }
+    while (curr->next) {
+        roomMessage(curr);
+        curr = curr->next;
+        counter++;
+        total++;
+        if (counter == 3) {
+            counter = 0;
+            std::cout << std::endl;
+        } else {
+            std::cout << " | ";
+        }
+    }
+    roomMessage(curr);
+    std::cout << std::endl;
+    return total;
 }
 
 std::string bookMenu() {
@@ -133,4 +172,17 @@ int Hotel::bookPent() const {
     }
     std::cout << "Unfortunately, all of the Penthouses are occupied!\n";
     return 0;
+}
+
+std::map<std::string, int> Hotel::countBookedByType() const {
+    std::map<std::string, int> bookedCount;
+    Room* curr = head;
+    while (curr) {
+        if (curr->isOccupied()) {
+            std::string roomType = curr->getType();
+            bookedCount[roomType]++;
+        }
+        curr = curr->next;
+    }
+    return bookedCount;
 }

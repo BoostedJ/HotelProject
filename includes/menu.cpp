@@ -3,6 +3,7 @@
 #include <iostream>
 #include <limits>
 #include <fstream>
+#include <vector>
 using namespace std;
 
 string inputDate;
@@ -69,10 +70,10 @@ void Menu::displayMenu() {
         cout << "        " << inputDate << " " << endl;
         cout << "=============================" << endl;
         cout << "1. Reserve a room" << endl;
-        cout << "2. Display Rooms Available" << endl;
+        cout << "2. Room Display Menu" << endl;
         cout << "3. Display Current Revenue" << endl;
         cout << "4. End of Day Report" << endl;
-        cout << "5. Exit" << endl;
+        cout << "5. Exit without saving" << endl;
         cout << "=============================" << endl;
         cout << "Enter your choice: ";
 
@@ -81,7 +82,7 @@ void Menu::displayMenu() {
         if (cin.fail()) {
             cin.clear();
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
-            cout << "Please enter a number between 1-4. \n";
+            cout << "Please enter a number between 1-5. \n";
             continue;
         }
         cin.ignore(numeric_limits<streamsize>::max(), '\n');
@@ -91,17 +92,17 @@ void Menu::displayMenu() {
                 bookRoom();
                 break;
             case 2:
-                hotel.fullDisplay();
+                roomsMenu();
                 break;
             case 3:
-                //displayRev();
+                displayRev();
                 break;
             case 4:
-                //getTotal();
+                endDay();
                 cont = false;
                 break;
             case 5:
-                //cout << "Thank you and have a good rest of your day!" << endl;
+                cout << "Thank you and have a good rest of your day!" << endl;
                 cont = false;
                 break;
             default:
@@ -119,7 +120,7 @@ void Menu::bookRoom() {
     cout << "3. Deluxe Suite" << endl;
     cout << "4. Penthouse" << endl;
     cout << "5. Custom Number" << endl;
-    cout << "6. Exit" << endl;
+    cout << "6. Exit without saving" << endl;
     int choice;
     cin >> choice;
     cin.ignore(numeric_limits<streamsize>::max(), '\n');
@@ -148,7 +149,7 @@ void Menu::bookRoom() {
             cout << endl << endl;
             break;
         default:
-            cout << "Please enter a number between 1-4.\n";
+            cout << "Please enter a number between 1-6.\n";
             choice = -1;
             break;
     }
@@ -159,41 +160,38 @@ void Menu::roomsMenu() {
     cout << "1. Available rooms" << endl;
     cout << "2. Occupied rooms" << endl;
     cout << "3. All rooms" << endl;
-    cout << "4. Exit" << endl;
+    cout << "4. Exit without saving" << endl;
     int choice;
     cin >> choice;
     cin.ignore(numeric_limits<streamsize>::max(), '\n');
     if (cin.fail()) {
         cin.clear();
-        cout << "Please enter a number between 1-6. \n";
+        cout << "Please enter a number between 1-4. \n";
     }
 
     switch (choice) {
+        int count;
         case 1:
-
-            break;
+            count = hotel.availableDisplay();
+        cout << "There are " << count << " rooms available" << endl;
+        break;
         case 2:
-
-            break;
+            count = hotel.occupiedDisplay();
+        cout << "There are " << count << " rooms occupied" << endl;
+        break;
         case 3:
-
-            break;
+            count = hotel.fullDisplay();
+        cout << "There are " << count << " rooms in total" << endl;
+        break;
         case 4:
-
-            break;
-        case 5:
-
-            break;
-        case 6:
             cout << endl << endl;
-            break;
+        break;
         default:
             cout << "Please enter a number between 1-4.\n";
-            choice = -1;
-            break;
+        choice = -1;
+        break;
     }
 }
-/*
 void Menu::displayRev() const {
     cout << "\n=============================" << endl;
     cout << " Currently, we have made: " << endl;
@@ -202,34 +200,29 @@ void Menu::displayRev() const {
         cout << " Keep up the good work!" << endl;
     }
     cout << "=============================" << endl;
-    cout << "Please press Enter or any key to continue..." << endl;
+    cout << "Please press Enter to continue..." << endl;
     string io;
     getline(cin, io);
 }
-void Menu::getTotal() const {
+
+void Menu::endDay() const {
     cout << "\n=============================" << endl;
     cout << " It's the end of the day!\n We were able to generate: " << endl;
-    cout << " $" << revenue << " worth of revenue.";
-    if (revenue < 350) {
-        cout << " This is not acceptable!" << endl;
-    } else {
-        cout << " This is acceptable." << endl;
-    }
+    cout << " $" << revenue << " worth of revenue." << endl;
     cout << "=============================" << endl;
-
-    cout << " We booked " << totSold << " rooms in total.\n";
-    for (int i = 0; i < sizeof(rooms)/sizeof(rooms[0]); i++) {
-        int dR = rooms[i].getTotalRooms() - rooms[i].getAvailableRooms();
-        cout << " " << dR << " of them ";
-        if (dR != 1) { cout << "were "; }
-        else { cout << "was a "; }
-        cout << rooms[i].name;
-        if (dR != 1) {
-            cout << "s";
+    cout << " We booked " << hotel.countOccupiedRooms() << " rooms in total.\n";
+    map<string, int> bookedCounts = hotel.countBookedByType();
+    const vector<string> orderedKeys = {"Courtyard", "Scenic", "Deluxe Suite", "Penthouse"};
+    for (const auto& key : orderedKeys) {
+        if (auto it = bookedCounts.find(key); it != bookedCounts.end()) {
+            cout << it->second << " of them ";
+            if (it->second == 1) {cout << "was a ";} else {cout << "were ";}
+            cout << it->first;
+            if (it->second != 1) {cout << "s";}
+            cout << endl;
         }
-        cout << "." << endl;
+
     }
     cout << "=============================" << endl;
     cout << "Have a good night and see you tomorrow!\n";
 }
-*/
