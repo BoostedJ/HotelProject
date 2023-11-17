@@ -27,5 +27,7 @@ public:
 
     [[nodiscard]] bool isOccupied() const;
 
+    void setOccupied(bool);
+
     friend class Hotel;
 };

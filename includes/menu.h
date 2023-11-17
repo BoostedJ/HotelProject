@@ -1,21 +1,26 @@
 #pragma once
+#include <string>
 
 class Menu {
 public:
-    void beginDay();
+    static void beginDay();
+
+
 
 private:
-    void displayMenu();
+    static void processDate(const std::string&);
 
-    void bookRoom();
+    static void loadDay(const std::string&);
 
-    static void displayRooms();
+    static void displayMenu();
+
+    static void bookRoom();
 
     static void roomsMenu();
 
-    void displayRev() const;
+    static void displayRev() ;
 
-    void endDay() const;
+    static void endDay() ;
 
     int revenue = 0;
 };

@@ -8,7 +8,7 @@ using namespace std;
 
 string inputDate;
 Hotel hotel;
-int revenue;
+bool edit = true;
 bool isValidDate(const string& date) {
     if (date.length() != 8) { return false; }
     if (!isdigit(date[0]) || !isdigit(date[1]) || date[2] != '-' ||
@@ -17,22 +17,6 @@ bool isValidDate(const string& date) {
         return false;
         }
     return true;
-}
-
-void processDate(const string& date) {
-    const string& filename = date;
-    ifstream existingFile(filename);
-    if (existingFile) {
-        cout << "Data for " << date << ":" << endl;
-        string line;
-        while (getline(existingFile, line)) {
-            cout << line << endl;
-        }
-        existingFile.close();
-    } else {
-        ofstream newFile(filename);
-        newFile.close();
-    }
 }
 
 void generate() {
@@ -46,15 +30,33 @@ void generate() {
     }
 }
 
+void Menu::processDate(const string& date) {
+    const string& filename = date;
+    ifstream existingFile(filename);
+    if (existingFile) {
+        loadDay(filename);
+        existingFile.close();
+    } else {
+        ofstream newFile(filename);
+        newFile.close();
+        cout << "Creating new file for " << filename << "!\n";
+        generate();
+    }
+}
+
 void Menu::beginDay() {
     cout << "Welcome to the Hotel administrator platform!" << endl;
     while(true) {
 
         cout << "Please enter the desired date! (mm-dd-yy): ";
         cin >> inputDate;
+        cin.clear();
         if (isValidDate(inputDate)) {
             processDate(inputDate);
-            generate();
+            if(!edit) {
+                break;
+            }
+            cout << endl;
             displayMenu();
             break;
         } else {
@@ -63,11 +65,39 @@ void Menu::beginDay() {
     }
 }
 
+void Menu::loadDay(const string& filename) {
+    cout << "1. Load existing hotel data for editing" << endl;
+    cout << "2. Load existing hotel data for viewing only" << endl;
+    cout << "Enter your choice: ";
+    int choice;
+    cin >> choice;
+    if (cin.fail()) {
+        cin.clear();
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        cout << "Please enter a number between 1-2. \n";
+    }
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    switch (choice) {
+        case 1:
+            hotel.loadFromFile(filename);
+            break;
+        case 2:
+            edit = false;
+            hotel.loadFromFile(filename);
+            hotel.occupiedDisplay();
+            cout << "Revenue: $" << hotel.getRev();
+            break;
+        default:
+            cout << "Please enter a number between 1-2. \n";
+        break;
+    }
+}
+
 void Menu::displayMenu() {
     bool cont = true;
     do {
         cout << "=============================" << endl;
-        cout << "        " << inputDate << " " << endl;
+        cout << "          " << inputDate << " " << endl;
         cout << "=============================" << endl;
         cout << "1. Reserve a room" << endl;
         cout << "2. Room Display Menu" << endl;
@@ -131,19 +161,19 @@ void Menu::bookRoom() {
 
     switch (choice) {
         case 1:
-            revenue += hotel.bookCourt();
+            hotel.bookCourt();
             break;
         case 2:
-            revenue += hotel.bookScenic();
+            hotel.bookScenic();
             break;
         case 3:
-            revenue += hotel.bookDeluxe();
+            hotel.bookDeluxe();
             break;
         case 4:
-            revenue += hotel.bookPent();
+            hotel.bookPent();
             break;
         case 5:
-
+            hotel.customBook();
             break;
         case 6:
             cout << endl << endl;
@@ -192,30 +222,28 @@ void Menu::roomsMenu() {
         break;
     }
 }
-void Menu::displayRev() const {
+
+void Menu::displayRev() {
     cout << "\n=============================" << endl;
     cout << " Currently, we have made: " << endl;
-    cout << " $" << revenue << endl;
-    if (revenue > 0) {
+    cout << " $" << hotel.getRev() << endl;
+    if (hotel.getRev() > 0) {
         cout << " Keep up the good work!" << endl;
     }
     cout << "=============================" << endl;
-    cout << "Please press Enter to continue..." << endl;
-    string io;
-    getline(cin, io);
 }
 
-void Menu::endDay() const {
+void Menu::endDay() {
     cout << "\n=============================" << endl;
     cout << " It's the end of the day!\n We were able to generate: " << endl;
-    cout << " $" << revenue << " worth of revenue." << endl;
+    cout << " $" << hotel.getRev() << " worth of revenue." << endl;
     cout << "=============================" << endl;
     cout << " We booked " << hotel.countOccupiedRooms() << " rooms in total.\n";
     map<string, int> bookedCounts = hotel.countBookedByType();
     const vector<string> orderedKeys = {"Courtyard", "Scenic", "Deluxe Suite", "Penthouse"};
     for (const auto& key : orderedKeys) {
         if (auto it = bookedCounts.find(key); it != bookedCounts.end()) {
-            cout << it->second << " of them ";
+            cout << " " << it->second << " of them ";
             if (it->second == 1) {cout << "was a ";} else {cout << "were ";}
             cout << it->first;
             if (it->second != 1) {cout << "s";}
@@ -223,6 +251,7 @@ void Menu::endDay() const {
         }
 
     }
+    hotel.saveToFile(inputDate);
     cout << "=============================" << endl;
     cout << "Have a good night and see you tomorrow!\n";
 }

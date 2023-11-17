@@ -9,10 +9,15 @@ private:
     Room* scenicHead;
     Room* dlxSuiteHead;
     Room* pentHead;
+    mutable int revenue;
 public:
     Hotel();
 
     ~Hotel();
+
+    void saveToFile(const std::string& filename) const;
+
+    void loadFromFile(const std::string& filename);
 
     void append(int);
 
@@ -24,13 +29,19 @@ public:
 
     int fullDisplay() const;
 
-    int bookCourt() const;
+    void bookCourt() const;
 
-    int bookScenic() const;
+    void bookScenic() const;
 
-    int bookDeluxe() const;
+    void bookDeluxe() const;
 
-    int bookPent() const;
+    void bookPent() const;
 
-    std::map<std::string, int> countBookedByType() const;
+    Room* findRoom(int) const;
+
+    void customBook() const;
+
+    int getRev() const;
+
+    [[nodiscard]] std::map<std::string, int> countBookedByType() const;
 };

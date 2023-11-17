@@ -20,7 +20,7 @@ Room::Room(const int num) : roomNumber(num), next(nullptr) {
 }
 
 std::string Room::getType() {
-    return std::move(roomType);
+    return roomType;
 }
 
 std::string Room::getOccupant() {
@@ -41,6 +41,10 @@ int Room::getPrice() const {
 
 bool Room::isOccupied() const {
     return occupied;
+}
+
+void Room::setOccupied(bool option) {
+    occupied = option;
 }
 
 void Room::book(std::string name) {
